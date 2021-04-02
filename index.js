@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const ObjectID = require('mongodb').ObjectID;
 require('dotenv').config()
 
 const app = express();
@@ -53,6 +54,15 @@ client.connect((err) => {
       res.send(products)
     })
   })
+  
+  app.delete('/deleteProduct/:id', (req, res) =>{
+    const id = ObjectID(req.params.id)
+    console.log(id);
+    productCollection.findOneAndDelete({_id: id})
+    .then(documents =>{
+        res.send(documents);
+    })
+})
   
   app.post("/product",(req, res) => {
     const pd=req.body;
