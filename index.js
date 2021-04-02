@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+require('dotenv').config()
 
 const app = express();
 app.use(cors());
@@ -10,7 +11,7 @@ const port = 5500;
 
 const MongoClient = require("mongodb").MongoClient;
 const uri =
-  "mongodb+srv://productVally:01939773554op5t@cluster0.mkpe6.mongodb.net/productVally?retryWrites=true&w=majority";
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mkpe6.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -70,9 +71,7 @@ client.connect((err) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World! to DB");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+app.listen(process.env.PORT || port);
